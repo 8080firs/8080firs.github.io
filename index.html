@@ -29,7 +29,7 @@
 
             randomz.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-               x = (this.responseText);
+               x = (this.responseText-1);
             }
             } 
         randomz.send();
@@ -50,7 +50,7 @@
             }
         </script>
     </head>
-    <body onload="">
+    <body onload="dog();">
         <b class='content' id="kek"></b>
     </body>
 </html>
