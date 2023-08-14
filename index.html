@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -20,37 +21,93 @@
             }, 600);
         });
 
-        function dog() {
-            var currentDate = new Date();
-            var startDate = new Date("2023-08-14");
-            var endDate = new Date("2023-08-21");
-            if (currentDate >= startDate && currentDate <= endDate) {
-                document.body.style.background = 'red';
-                document.getElementById('kek').innerHTML = 'R&oslash;d';
-                return;
-            }            
-            var randomz = new XMLHttpRequest();
-            var url = "https://www.random.org/integers/?num=1&min=0&max=1&col=1&base=10&format=plain&rnd=new"
-            randomz.open("GET", url, true);
+        function isToday(someDate) {
+            const today = new Date()
+            return someDate.getDate() == today.getDate() &&
+                someDate.getMonth() == today.getMonth() &&
+                someDate.getFullYear() == today.getFullYear()
+        }
 
-            randomz.onreadystatechange = function () {
-                var x;
-                if (this.readyState == 4) {
-                    if (this.status == 200) {
-                        x = !!parseInt(this.responseText);
+        function green() {
+            document.body.style.background = 'green';
+            document.getElementById('kek').innerHTML = 'Gr&oslash;n'
+        }
+
+        function red() {
+            document.body.style.background = 'red';
+            document.getElementById('kek').innerHTML = 'R&oslash;d'
+        }
+
+        function getGreenChance() {
+            var now = new Date();
+            var increaseTime = new Date();
+            increaseTime.setHours(12);
+            increaseTime.setMinutes(30);
+
+            if (now.getTime() < increaseTime.getTime()) {
+                console.log("Current time is before increase time");
+                return 0
+            }
+
+            // Calculate the time difference in milliseconds
+            const midnight = new Date();
+            midnight.setDate(midnight.getDate() + 1);
+            midnight.setHours(0, 0, 0, 0);
+            const timeDifference = midnight.getTime() - now.getTime();
+
+            return 1 - timeDifference / (midnight.getTime() - increaseTime.getTime());
+        }
+
+        function dog() {
+            try {
+                var currentDate = new Date();
+                var startDate = new Date("2023-08-14");
+                var endDate = new Date("2023-08-21");
+                var greenDate = new Date("2023-08-20");
+
+                if (isToday(greenDate)) {
+                    console.log('Green date')
+                    green()
+                    return
+                }
+
+                if (currentDate >= startDate && currentDate <= endDate) {
+                    console.log('In interval')
+                    var chance = getGreenChance()
+                    var roll = Math.random()
+                    console.log('Threshold: ' + chance)
+                    console.log('Roll: ' + roll)
+                    if (roll < chance) {
+                        green()
                     } else {
-                        x = (Math.floor(Math.random() * 2) == 0);
+                        red()
                     }
-                    if (x) {
-                        document.body.style.background = 'green';
-                        document.getElementById('kek').innerHTML = 'Gr&oslash;n'
-                    } else {
-                        document.body.style.background = 'red';
-                        document.getElementById('kek').innerHTML = 'R&oslash;d'
-                    }
+                    return
                 }
             }
-            randomz.send();
+            catch {
+                console.log('Normal behavior...')
+                var randomz = new XMLHttpRequest();
+                var url = "https://www.random.org/integers/?num=1&min=0&max=1&col=1&base=10&format=plain&rnd=new"
+                randomz.open("GET", url, true);
+
+                randomz.onreadystatechange = function () {
+                    var x;
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            x = !!parseInt(this.responseText);
+                        } else {
+                            x = (Math.floor(Math.random() * 2) == 0);
+                        }
+                        if (x) {
+                            green()
+                        } else {
+                            red()
+                        }
+                    }
+                }
+                randomz.send();
+            }
         }
 
         function sleep(ms) {
