@@ -21,13 +21,6 @@
             }, 600);
         });
 
-        function isToday(someDate) {
-            const today = new Date()
-            return someDate.getDate() == today.getDate() &&
-                someDate.getMonth() == today.getMonth() &&
-                someDate.getFullYear() == today.getFullYear()
-        }
-
         function green() {
             document.body.style.background = 'green';
             document.getElementById('kek').innerHTML = 'Gr&oslash;n'
@@ -36,26 +29,6 @@
         function red() {
             document.body.style.background = 'red';
             document.getElementById('kek').innerHTML = 'R&oslash;d'
-        }
-
-        function getGreenChance() {
-            var now = new Date();
-            var increaseTime = new Date();
-            increaseTime.setHours(12);
-            increaseTime.setMinutes(30);
-
-            if (now.getTime() < increaseTime.getTime()) {
-                console.log("Current time is before increase time");
-                return 0
-            }
-
-            // Calculate the time difference in milliseconds
-            const midnight = new Date();
-            midnight.setDate(midnight.getDate() + 1);
-            midnight.setHours(0, 0, 0, 0);
-            const timeDifference = midnight.getTime() - now.getTime();
-
-            return 1 - timeDifference / (midnight.getTime() - increaseTime.getTime());
         }
 
         function dog() {
