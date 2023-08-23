@@ -59,55 +59,26 @@
         }
 
         function dog() {
-            try {
-                var currentDate = new Date();
-                var startDate = new Date("2023-08-14");
-                var endDate = new Date("2023-08-21");
-                var greenDate = new Date("2023-08-20");
+            var randomz = new XMLHttpRequest();
+            var url = "https://www.random.org/integers/?num=1&min=0&max=1&col=1&base=10&format=plain&rnd=new"
+            randomz.open("GET", url, true);
 
-                if (isToday(greenDate)) {
-                    console.log('Green date')
-                    green()
-                    return
-                }
-
-                if (currentDate >= startDate && currentDate <= endDate) {
-                    console.log('In interval')
-                    var chance = getGreenChance()
-                    var roll = Math.random()
-                    console.log('Threshold: ' + chance)
-                    console.log('Roll: ' + roll)
-                    if (roll < chance) {
+            randomz.onreadystatechange = function () {
+                var x;
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        x = !!parseInt(this.responseText);
+                    } else {
+                        x = (Math.floor(Math.random() * 2) == 0);
+                    }
+                    if (x) {
                         green()
                     } else {
                         red()
                     }
-                    return
                 }
             }
-            catch {
-                console.log('Normal behavior...')
-                var randomz = new XMLHttpRequest();
-                var url = "https://www.random.org/integers/?num=1&min=0&max=1&col=1&base=10&format=plain&rnd=new"
-                randomz.open("GET", url, true);
-
-                randomz.onreadystatechange = function () {
-                    var x;
-                    if (this.readyState == 4) {
-                        if (this.status == 200) {
-                            x = !!parseInt(this.responseText);
-                        } else {
-                            x = (Math.floor(Math.random() * 2) == 0);
-                        }
-                        if (x) {
-                            green()
-                        } else {
-                            red()
-                        }
-                    }
-                }
-                randomz.send();
-            }
+            randomz.send();
         }
 
         function sleep(ms) {
